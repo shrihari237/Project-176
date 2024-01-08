@@ -1,46 +1,92 @@
 var gameOver = false;
 
-//Fill blanks only if the character match is found 
-$(".clickable").click(function () { 
-    var correctGuess = false;
+let words=[
+  {
+      "inputs":5,
+      "category":"Sports",
+      "word":"Chess"
+  },
+  {
+      "inputs":6,
+      "category":"European Country Name",
+      "word":"France"
+  },
 
-//Get the id of the button clicked 
-let id= $(this).attr("id");
+]
 
-//Get the life
+$(document).ready(function(){
 
-var life = parseInt($("#life").text());
+  const randomWord = words[Math.floor(Math.random()*words.length)];
 
-//Loop through all the letters
+  $('#blanks').empty();
 
-for (var i = 0; i < randomWord.word.length; i++) {
-  //Check if the character matches the id of the button
+  for(var i = 0;i<randomWord.inputs;i++){
+    let input = `<span class="fill_blanks" id="input_${i}">_</span>`
 
-  if (randomWord.word.charAt(i).toLowerCase() == id) {
-    //Check if the life is still left and blank is is empty/already filled
+    $('#blanks').append(input)
+  }
 
-    if (
-      life > 0 &&
-      ($(".fill_blanks").eq(i).html() == "_" ||
-        $(".fill_blanks").eq(i).html() == id)
-    ) {
-      //fill blanks
+  $('#hint').html(randomWord.category)
+  //Fill blanks only if the character match is found
+$(".clickable").click(function () {
+  var correctGuess = false;
 
-      $(".fill_blanks").eq(i).html(id);
 
-      correctGuess = true;
+  //Get the id of the button clicked
+  let id = $(this).attr("id");
 
-      //Check if the word guess is complete
 
-      if ($("#blanks").text() === randomWord.word.toLowerCase()) {
-        $("#result").text("You Win!!");
+  //Get the life
+  var life = parseInt($("#life").text());
 
-        correctGuess = true;
 
-        gameOver = true;
+  //Loop through all the letters
+
+
+  for (var i = 0; i < randomWord.word.length; i++) {
+    //Check if the character matches the id of the button
+
+
+    if (randomWord.word.charAt(i).toLowerCase() == id) {
+      if (
+        life > 0 &&
+        ($(".fill_blanks").eq(i).html() == "_" ||
+          $(".fill_blanks").eq(i).html() == id)
+      ) {
+        if (
+          life > 0 &&
+          ($(".fill_blanks").eq(i).html() == "_" ||
+            $(".fill_blanks").eq(i).html() == id)
+        ) {
+          //fill blanks
+
+
+          $(".fill_blanks").eq(i).html(id);
+
+
+          correctGuess = true;
+        }
+
+
+        //Check if the word guess is complete
+
+
+        if ($("#blanks").text() === randomWord.word.toLowerCase()) {
+          $("#result").text("You Win!!");
+
+
+          correctGuess = true;
+          gameOver = true;
+
+
+        }
       }
     }
   }
-}
+});
+})
+
+
+
 
 
